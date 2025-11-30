@@ -9,13 +9,15 @@ class LibraryItem{
 		string dueDate;
 	public:
 		LibraryItem(string title, string author, int id){
+			// Initialize base class attributes
 			this->title = title;
 			this->author = author;
-			this->isAvailable = 1;
+			this->isAvailable = 1;	// Item is available by default
 			this->id = id;
 		}
 		int isAvailable, id;
-		
+
+		// Pure virtual functions (Runtime Polymorphism)
 		virtual void checkOut(string dueDate) = 0;
 		virtual void returnItem() = 0;
 		virtual void displayDetails() = 0;
@@ -44,20 +46,28 @@ class Book : public LibraryItem{
 			this->isbn = isbn;
 			cout << "Book added successfully.., ID is " << this->id << endl << endl;
 		}
+
+		// Checkout (Override)
 		void checkOut(string dueDate) override{
 			this->isAvailable = 0;
 			this->setDueDate(dueDate);
 			cout << "Book checked out successfully.\n\n";	
 		}
+
+		// Return (Override)
 		void returnItem() override{
 			this->isAvailable = 1;
 			cout << "Book returned successfully.\n\n";
 		}
+
+		// Display details (Override)
 		void displayDetails() override{
 			cout << "Book ID: " << this->id << endl;
 			cout << "Book Title: " << this->getTitle() << endl;
 			cout << "Author Name: " << this->getAuthor() << endl;	
 			cout << "ISBN: " << this->isbn << endl;
+
+			// Check availability
 			if (this->isAvailable == 1){
     			cout << "Book is available\n";
 			}else{
@@ -90,9 +100,9 @@ class DVD : public LibraryItem{
 			cout << "Author Name: " << this->getAuthor() << endl;	
 			cout << "Duration: " << this->duration << " minutes" << endl;
 			if (this->isAvailable == 1){
-    			cout << "Book is available\n";
+    			cout << "DVD is available\n";
 			}else{
-			    cout << "Book is not available, Expected available date: " << this->getDueDate() << endl;
+			    cout << "DVD is not available, Expected available date: " << this->getDueDate() << endl;
 			}
 			cout << endl;
 		} 
@@ -121,9 +131,9 @@ class Magazines : public LibraryItem{
 			cout << "Magazin Author: " << this->getAuthor() << endl;
 			cout << "Issue Number: " << this->issueNumber << endl; 
 			if (this->isAvailable == 1){
-    			cout << "Book is available\n";
+    			cout << "Magazine is available\n";
 			}else{
-			    cout << "Book is not available, Expected available date: " << this->getDueDate() << endl;
+			    cout << "Magazine is not available, Expected available date: " << this->getDueDate() << endl;
 			}
 
 			cout << endl;
@@ -131,10 +141,11 @@ class Magazines : public LibraryItem{
 };
 
 int main(){
-	LibraryItem *items[100];
+	LibraryItem *items[100];	// Array of base class pointers
 	int totItem = 0;
 	int ch;
 	do{
+		// Main menu
 		cout << "===== Library Management System =====\n";
 		cout << "1. Add Book\n";
 		cout << "2. Add DVD\n";
@@ -150,6 +161,7 @@ int main(){
 		
 		switch(ch){
 			case 1:{
+				// Add Book
 				string title, author, isbn;
 				int id;
 				cout << "Enter book title: ";
@@ -164,6 +176,7 @@ int main(){
 				break;
 			}
 			case 2:{
+				// Add DVD
 				string title, author;
 				double duration;
 				int id;
@@ -180,6 +193,7 @@ int main(){
 				break;
 			}
 			case 3:{
+				// Add Magazine
 				string title, author;
 				double issueNumber;
 				int id;
@@ -196,6 +210,7 @@ int main(){
 				break;
 			}
 			case 4:{
+				// Display all records
 				if(totItem != 0){
 					int i;
 					for(i = 0; i < totItem; i++){
@@ -207,6 +222,7 @@ int main(){
 				break;
 			}	
 			case 5:{
+				// Check out
 				if(totItem != 0){
 					int id, i;
 					string dueDate;
@@ -227,6 +243,7 @@ int main(){
 				break;
 			}
 			case 6:{
+				// Return item
 				if(totItem != 0){
 					int id, i;
 					cout << "Enter ID to return item: ";
@@ -243,6 +260,7 @@ int main(){
 				break;
 			}	
 			case 7:{
+				// Search by ID
 				if(totItem != 0){
 					int id, i;
 					cout << "Enter ID to search item: ";
@@ -259,6 +277,7 @@ int main(){
 				break;
 			}
 			case 8:{
+				// Free memory before exit
 				int i;
 				for(i = 0; i < totItem; i++){
 					delete items[i];
